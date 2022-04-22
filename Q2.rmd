@@ -1,0 +1,104 @@
+---
+title: "Estatística: Exercício 2"
+author: "Alberson da Silva Miranda"
+output:
+  pdf_document: default
+---
+
+```{r, setup, include = FALSE}
+
+# opções
+options(prompt = "R> ", continue = "+ ")
+
+# pacotes
+library(ggplot2)
+```
+
+```{r configs, include = FALSE}
+
+# chunk
+knitr::opts_chunk$set(
+    echo = TRUE
+)
+```
+
+# **a)** *Aproxime a média, mediana e moda desses dados*
+
+```{r dados}
+
+# dados iniciais
+data = data.frame(
+  li = c(
+    22, 28, 34, 40, 46
+  ),
+  ls = c(
+      27, 33, 39, 45, 51
+  ),
+  frequencia = c(
+      16, 2, 2, 3, 1
+  )
+)
+
+# incluindo frequência acumulada
+data$frequencia_acum = cumsum(data$frequencia)
+
+# exibindo tabela
+print(data)
+```
+
+Primeiramente, a média de cada intervalo:
+
+```{r media_intervalo}
+
+data$media_intervalo = (data$ls + data$li) / 2
+
+print(data)
+```
+
+E depois multiplicar essa média pela frequência do intervalo:
+
+```{r media_x_freq}
+
+data$media_x_freq = data$media_intervalo * data$frequencia
+
+print(data)
+```
+
+Por fim, a média será o somatório dos produtos das médias dos intervalos por sua frequência, dividido pelo somatório das frequências.
+
+```{r media}
+
+sum(data$media_x_freq) / sum(data$frequencia)
+
+```
+
+Para a mediana, primeiro verifica-se em qual classe ela se encontra. Neste caso, como são 24 observações, a mediana (que é a observação na posição `r (24 + 1) / 2`) se encontra na primeira classe, que contém as 16 primeiras. Supondo que os dados são distribuídos de maneira uniforme dentro da classe, podemos estimar a mediana da seguinte forma:
+$$mediana = L_i + (P-f_{ai})\frac{h}{f_m}$$
+
+Em  que $L_i$ é o limite inferior da classe da mediana, $P$ o posto da mediana, $f_{ai}$ a frequência acumulada até a classe anterior à da mediana, $h$ a amplitude da classe da mediana e $f_m$ a frequência da classe da mediana.
+
+Então, a mediana será:
+
+```{r mediana}
+
+22 + (25 / 2 - 0) * (27 - 22) / 16
+```
+
+Já a moda será a média da classe de maior frequência e, portanto, $24.5$.
+
+# **b)** *Faça um esboço do histograma*
+
+```{r}
+
+# criando intervalos categóricos
+data$intervalo = factor(
+  paste(data$li, data$ls, sep = "-")
+)
+
+# plotando histograma
+data |>
+  ggplot(aes(x = intervalo, y = frequencia)) +
+  geom_col(
+    color = "808080", fill = "#004b8d", alpha = .8) +
+  theme_minimal()
+```
