@@ -10,8 +10,6 @@ output:
 # opções
 options(prompt = "R> ", continue = "+ ")
 
-# pacotes
-library(ggplot2)
 ```
 
 ```{r configs, include = FALSE}
@@ -90,15 +88,20 @@ Já a moda será a média da classe de maior frequência e, portanto, $24.5$.
 
 ```{r}
 
-# criando intervalos categóricos
-data$intervalo = factor(
-  paste(data$li, data$ls, sep = "-")
+# criando intervalos de classes para o histograma
+data = actuar::grouped.data(
+  intervalo = c(
+    22, 27, 33, 39, 45, 51
+  ),
+  frequencia = c(
+    16, 2, 2, 3, 1
+  )
 )
 
 # plotando histograma
-data |>
-  ggplot(aes(x = intervalo, y = frequencia)) +
-  geom_col(
-    color = "808080", fill = "#004b8d", alpha = .8) +
-  theme_minimal()
+hist(data, main = "Histograma", xlab = "Intervalo", ylab = "Densidade")
 ```
+
+# **b)** *Classifique o histograma em simétrico, assimétrico à esquerda ou assimétrico à direita.*
+
+É assimétrico à direita, pois $média>mediana>moda$.
