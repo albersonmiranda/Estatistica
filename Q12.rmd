@@ -1,0 +1,66 @@
+---
+title: "Estatística: Exercício 12"
+author: "Alberson da Silva Miranda"
+output:
+  pdf_document: default
+---
+
+```{r, setup, include = FALSE}
+
+# opções
+options(prompt = "R> ", continue = "+ ")
+
+```
+
+```{r configs, include = FALSE}
+
+# chunk
+knitr::opts_chunk$set(
+    echo = TRUE
+)
+```
+
+# CALCULAR O INTERVALO DE CONFIANÇA PARA A MÉDIA
+
+Dados do exercício:
+
+```{r}
+n = 12
+x_media = 6.2
+s = 1.7
+alpha = 0.95
+```
+
+Primeiro, calcula-se o erro padrão:
+```{r}
+erro_padrao = s / sqrt(n)
+```
+
+Os graus de liberdade:
+```{r}
+graus_liberdade = n - 1
+```
+
+O $t$ crítico — também conhecido como $t$ *score* ou $t$ tabelado:
+```{r}
+t_score = qt(
+    (1 - alpha) / 2,
+    graus_liberdade,
+    lower.tail = FALSE
+)
+```
+
+A margem de erro:
+```{r}
+margem_erro = t_score * erro_padrao
+```
+
+E, finalmente, o intervalo de confiança:
+```{r}
+intervalo_confianca = list(
+    limite_inferior = x_media - margem_erro,
+    limite_superior = x_media + margem_erro
+)
+
+print(intervalo_confianca)
+```
