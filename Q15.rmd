@@ -1,0 +1,53 @@
+---
+title: "Estatística: Exercício 15"
+author: "Alberson da Silva Miranda"
+output:
+  pdf_document: default
+---
+
+```{r, setup, include = FALSE}
+
+# opções
+options(prompt = "R> ", continue = "+ ")
+
+```
+
+```{r configs, include = FALSE}
+
+# chunk
+knitr::opts_chunk$set(
+    echo = TRUE
+)
+```
+
+# CALCULAR TAMANHO DA AMOSTRA
+
+Dados do exercício:
+
+```{r}
+margem_erro = 0.05
+alpha = 0.95
+p_hat = 0.3
+```
+
+Primeiro, calcula-se $\hat{q}$:
+```{r}
+q_hat = 1 - p_hat
+
+print(q_hat)
+```
+
+O $Z$ crítico — também conhecido como $Z$ *score* ou $Z$ tabelado:
+```{r}
+z_score = qnorm(
+    (1 - alpha) / 2,
+    lower.tail = FALSE
+)
+```
+
+Então podemos calcular $n$:
+```{r}
+n = p_hat * q_hat * (z_score / margem_erro) ^ 2
+
+print(n)
+```
